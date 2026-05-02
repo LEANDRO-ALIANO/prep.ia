@@ -19,20 +19,40 @@ public class AIService {
                 .apiKey(apiKey)
                 .build();
     }
-
-    public String generetedQuestions(Optional<Job> job1) {
-        Job job = job1.get();
-        String prompt = String.format("Gere perguntas de entrevista para o cargo '%s' na área '%s', nível %s. Descrição: %s",
-                job.getJobName(),
-                job.getArea(),
-                job.getLevelEnum(),
-                job.getDescription());
-        GenerateContentResponse response=
+    public String callAI(String prompt) {
+        GenerateContentResponse response =
                 client.models.generateContent(
                         "gemini-2.5-flash",
                         prompt,
-                        null);
+                        null
+                );
 
-        return response.toString();
+        return response.text();
     }
+
+//    public String generetedQuestions(Optional<Job> job1, InterviewService interviewService) {
+//        Job job = job1.get();
+//        String prompt = String.format("""
+//        Você é um entrevistador experiente.
+//        Inicie uma entrevista formal para a vaga:
+//
+//        Nome: %s
+//        Área: %s
+//        Nível: %s
+//        Descrição: %s
+//
+//        Faça apenas a primeira pergunta.
+//        """,
+//                job.getJobName(),
+//                job.getArea(),
+//                job.getLevelEnum(),
+//                job.getDescription());
+//        interviewService.addMessage("system", prompt);
+//        String response = callAI(interviewService.getFormattedHistory());
+//        interviewService.addMessage("assistant", response);
+//        return response;
+//    }
+
+
+
 }
